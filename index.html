@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Replacement Algorithms</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <h1>KONGU ENGINEERING COLLEGE</h1>
+        <h1>DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING </h1>
+        <h2>DEVELOPED BY</h2>
+        <h2>HARINI S(22CSR065)</h2>
+        <h2>LATHIKA K(22CSR107)</h2>
+        <h1>Page Replacement Algorithms</h1>
+        <section class="introduction">
+            <p>Page replacement algorithms are crucial for managing memory in operating systems. They help decide which memory pages to swap out, write to disk, or replace when new pages are needed.</p>
+        </section>
+        <section class="algorithm-list">
+            <h2>Algorithms</h2>
+            <ul>
+                <li><a href="#fifo">First-In-First-Out (FIFO)</a></li>
+                <li><a href="#lru">Least Recently Used (LRU)</a></li>
+                <li><a href="#optimal">Optimal Page Replacement</a></li>
+                <!-- Add more algorithms as needed -->
+            </ul>
+        </section>
+        <section id="fifo" class="algorithm-detail">
+            <h2>First-In-First-Out (FIFO)</h2>
+            <p>The FIFO page replacement algorithm replaces the oldest page in memory.</p>
+            <pre><code>
+function FIFO(pages, frames):
+    queue = []
+    page_faults = 0
+    for page in pages:
+        if page not in queue:
+            if len(queue) == frames:
+                queue.pop(0)
+            queue.append(page)
+            page_faults += 1
+    return page_faults
+            </code></pre>
+            <div class="simulation">
+                <h3>Simulation</h3>
+                <form id="fifo-simulation">
+                    <label for="fifo-pages">Page References (comma-separated):</label>
+                    <input type="text" id="fifo-pages">
+                    <label for="fifo-frames">Number of Frames:</label>
+                    <input type="number" id="fifo-frames">
+                    <button type="button" onclick="runFifoSimulation()">Run Simulation</button>
+                </form>
+                <div id="fifo-result"></div>
+            </div>
+        </section>
+        <section id="lru" class="algorithm-detail">
+            <h2>Least Recently Used (LRU)</h2>
+            <p>The LRU page replacement algorithm replaces the page that has not been used for the longest period of time.</p>
+            <pre><code>
+function LRU(pages, frames):
+    queue = []
+    page_faults = 0
+    for page in pages:
+        if page not in queue:
+            if len(queue) == frames:
+                least_recently_used = min(queue, key=lambda p: queue.index(p))
+                queue.remove(least_recently_used)
+            queue.append(page)
+            page_faults += 1
+        else:
+            queue.remove(page)
+            queue.append(page)
+    return page_faults
+            </code></pre>
+            <div class="simulation">
+                <h3>Simulation</h3>
+                <form id="lru-simulation">
+                    <label for="lru-pages">Page References (comma-separated):</label>
+                    <input type="text" id="lru-pages">
+                    <label for="lru-frames">Number of Frames:</label>
+                    <input type="number" id="lru-frames">
+                    <button type="button" onclick="runLruSimulation()">Run Simulation</button>
+                </form>
+                <div id="lru-result"></div>
+            </div>
+        </section>
+        <section id="optimal" class="algorithm-detail">
+            <h2>Optimal Page Replacement</h2>
+            <p>The Optimal page replacement algorithm replaces the page that will not be used for the longest period of time in the future.</p>
+            <pre><code>
+function Optimal(pages, frames):
+    queue = []
+    page_faults = 0
+    for i in range(len(pages)):
+        if pages[i] not in queue:
+            if len(queue) == frames:
+                farthest_index = -1
+                farthest_page = -1
+                for q in queue:
+                    try:
+                        index = pages[i + 1:].index(q)
+                    except ValueError:
+                        index = float('inf')
+                    if index > farthest_index:
+                        farthest_index = index
+                        farthest_page = q
+                queue.remove(farthest_page)
+            queue.append(pages[i])
+            page_faults += 1
+    return page_faults
+            </code></pre>
+            <div class="simulation">
+                <h3>Simulation</h3>
+                <form id="optimal-simulation">
+                    <label for="optimal-pages">Page References (comma-separated):</label>
+                    <input type="text" id="optimal-pages">
+                    <label for="optimal-frames">Number of Frames:</label>
+                    <input type="number" id="optimal-frames">
+                    <button type="button" onclick="runOptimalSimulation()">Run Simulation</button>
+                </form>
+                <div id="optimal-result"></div>
+            </div>
+        </section>
+        <section class="comparison">
+            <h2>Comparison of Algorithms</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Algorithm</th>
+                        <th>Page Faults</th>
+                        <th>Advantages</th>
+                        <th>Disadvantages</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>FIFO</td>
+                        <td>Depends on input</td>
+                        <td>Simple to implement</td>
+                        <td>Not always efficient</td>
+                    </tr>
+                    <tr>
+                        <td>LRU</td>
+                        <td>Depends on input</td>
+                        <td>Better performance</td>
+                        <td>Requires more resources</td>
+                    </tr>
+                    <tr>
+                        <td>Optimal</td>
+                        <td>Least page faults</td>
+                        <td>Best performance</td>
+                        <td>Impractical to implement</td>
+                    </tr>
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <footer>
+        <a href="#">Contact Us</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <p>&copy; 2024 AlgoLearn</p>
+    </footer>
+    <script src="scripts.js"></script>
+</body>
+</html>
